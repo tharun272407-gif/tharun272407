@@ -1,5 +1,5 @@
 # 💫 About Me:
-I'm currently studying B.tech(CSE)<br>I like Web Development. 
+I'm currently studying B.tech(CSE)<br> 
 
 
 ## 🌐 Socials:
