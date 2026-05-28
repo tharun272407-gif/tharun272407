@@ -1,0 +1,806 @@
+<!-- Design and develop a complete responsive and interactive library management webpage for the 
+    university library . The page must include a memebership registration form using appropriate
+    form controls with animations and effects to enhance the appereance of webpage . Create a new 
+    arrival section using bootstrap cards . Perform form validation and show the library opening 
+    hours and display atleast one information where book information is displayed dynamically
+    when the user interacts -->
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeoVerse Smart Library</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Poppins',sans-serif;
+        }
+
+        body{
+            background:#0f172a;
+            overflow-x:hidden;
+            color:white;
+        }
+
+        /* Animated Background */
+
+        body::before{
+            content:'';
+            position:fixed;
+            width:500px;
+            height:500px;
+            background:#00f5ff;
+            border-radius:50%;
+            top:-200px;
+            left:-150px;
+            filter:blur(120px);
+            opacity:0.4;
+            animation:move1 10s infinite alternate;
+            z-index:-1;
+        }
+
+        body::after{
+            content:'';
+            position:fixed;
+            width:450px;
+            height:450px;
+            background:#8b5cf6;
+            border-radius:50%;
+            bottom:-200px;
+            right:-150px;
+            filter:blur(120px);
+            opacity:0.4;
+            animation:move2 12s infinite alternate;
+            z-index:-1;
+        }
+
+        @keyframes move1{
+            from{
+                transform:translateY(0px);
+            }
+            to{
+                transform:translateY(100px);
+            }
+        }
+
+        @keyframes move2{
+            from{
+                transform:translateX(0px);
+            }
+            to{
+                transform:translateX(-100px);
+            }
+        }
+
+        /* Navbar */
+
+        .navbar{
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(15px);
+            border-bottom:1px solid rgba(255,255,255,0.1);
+        }
+
+        .navbar-brand{
+            font-size:1.7rem;
+            font-weight:700;
+            letter-spacing:1px;
+        }
+
+        .nav-link{
+            color:white !important;
+            margin-left:20px;
+            position:relative;
+            transition:0.3s;
+        }
+
+        .nav-link::after{
+            content:'';
+            position:absolute;
+            width:0%;
+            height:2px;
+            background:#00f5ff;
+            left:0;
+            bottom:-4px;
+            transition:0.4s;
+        }
+
+        .nav-link:hover::after{
+            width:100%;
+        }
+
+        /* Hero */
+
+        .hero{
+            min-height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            padding:40px;
+        }
+
+        .hero-content h1{
+            font-size:4rem;
+            font-weight:700;
+            background:linear-gradient(to right,#00f5ff,#8b5cf6);
+            -webkit-backgroundclip:text;
+            -webkit-text-fill-color:transparent;
+            animation:fadeUp 1.5s ease;
+        }
+
+        .hero-content p{
+            margin-top:20px;
+            font-size:1.2rem;
+            color:#d1d5db;
+            animation:fadeUp 2s ease;
+        }
+
+        .hero-btn{
+            margin-top:30px;
+            padding:14px 35px;
+            border:none;
+            border-radius:50px;
+            background:linear-gradient(to right,#00f5ff,#8b5cf6);
+            color:white;
+            font-weight:600;
+            transition:0.4s;
+        }
+
+        .hero-btn:hover{
+            transform:scale(1.1);
+            box-shadow:0 0 20px #00f5ff;
+        }
+
+        @keyframes fadeUp{
+            from{
+                opacity:0;
+                transform:translateY(40px);
+            }
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+        }
+
+        /* Glass Sections */
+
+        .glass{
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.1);
+            backdrop-filter:blur(20px);
+            border-radius:25px;
+            padding:40px;
+            box-shadow:0 8px 30px rgba(0,0,0,0.3);
+        }
+
+        section{
+            padding:80px 20px;
+        }
+
+        .section-title{
+            text-align:center;
+            margin-bottom:50px;
+            font-size:2.5rem;
+            font-weight:700;
+            color:#00f5ff;
+        }
+
+        /* Form */
+
+        .form-control,
+        .form-select{
+            background:rgba(255,255,255,0.1);
+            border:none;
+            color:white;
+            padding:14px;
+            border-radius:12px;
+        }
+
+        .form-control:focus,
+        .form-select:focus{
+            box-shadow:0 0 15px #00f5ff;
+            background:rgba(255,255,255,0.15);
+            color:white;
+        }
+
+        .form-control::placeholder{
+            color:#d1d5db;
+        }
+
+        label{
+            margin-bottom:8px;
+            font-weight:500;
+        }
+
+        .submit-btn{
+            width:100%;
+            padding:14px;
+            border:none;
+            border-radius:50px;
+            background:linear-gradient(to right,#00f5ff,#8b5cf6);
+            color:white;
+            font-weight:600;
+            transition:0.4s;
+        }
+
+        .submit-btn:hover{
+            transform:translateY(-4px);
+            box-shadow:0 0 20px #00f5ff;
+        }
+
+        /* Cards */
+
+        .book-card{
+            background:rgba(255,255,255,0.08);
+            border-radius:20px;
+            overflow:hidden;
+            transition:0.5s;
+            border:1px solid rgba(255,255,255,0.1);
+        }
+
+        .book-card:hover{
+            transform:translateY(-15px) rotate(1deg);
+            box-shadow:0 0 25px rgba(0,245,255,0.5);
+        }
+
+        .book-card img{
+            width:100%;
+            height:260px;
+            object-fit:cover;
+        }
+
+        .book-card .content{
+            padding:20px;
+        }
+
+        .book-btn{
+            border:none;
+            padding:10px 20px;
+            border-radius:30px;
+            background:#00f5ff;
+            color:#0f172a;
+            font-weight:600;
+            transition:0.3s;
+        }
+
+        .book-btn:hover{
+            background:#8b5cf6;
+            color:white;
+        }
+
+        /* Opening Hours */
+
+        .hours-box{
+            text-align:center;
+            padding:25px;
+            border-radius:20px;
+            transition:0.4s;
+        }
+
+        .hours-box:hover{
+            transform:scale(1.05);
+            background:rgba(255,255,255,0.1);
+        }
+
+        .hours-box i{
+            font-size:2rem;
+            color:#00f5ff;
+            margin-bottom:15px;
+        }
+
+        /* Dynamic Book Info */
+
+        .dynamic-box{
+            text-align:center;
+            padding:40px;
+            border-radius:25px;
+            background:rgba(255,255,255,0.08);
+            border:1px solid rgba(255,255,255,0.1);
+            transition:0.4s;
+        }
+
+        .dynamic-box:hover{
+            box-shadow:0 0 30px rgba(139,92,246,0.5);
+        }
+
+        /* Footer */
+
+        footer{
+            text-align:center;
+            padding:25px;
+            background:black;
+            margin-top:40px;
+        }
+
+        /* Responsive */
+
+        @media(max-width:768px){
+
+            .hero-content h1{
+                font-size:2.5rem;
+            }
+
+            .section-title{
+                font-size:2rem;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-book-open-reader"></i>
+                NeoVerse Library
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="menu">
+
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#register">Register</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#arrival">New Arrivals</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#hours">Hours</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Hero -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <h1>Future of Smart Library</h1>
+
+            <p>
+                Experience next generation digital university library management
+            </p>
+
+            <button class="hero-btn">
+                Explore Now
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- Registration -->
+
+    <section id="register">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Membership Registration
+            </h2>
+
+            <div class="glass">
+
+                <form class="needs-validation" novalidate>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-4">
+
+                            <label>Student Name</label>
+
+                            <input type="text"
+                            class="form-control"
+                            placeholder="Enter full name"
+                            required>
+
+                            <div class="invalid-feedback">
+                                Name is required
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <label>Email Address</label>
+
+                            <input type="email"
+                            class="form-control"
+                            placeholder="Enter email"
+                            required>
+
+                            <div class="invalid-feedback">
+                                Valid email required
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-4">
+
+                            <label>USN Number</label>
+
+                            <input type="text"
+                            class="form-control"
+                            placeholder="Enter USN"
+                            required>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <label>Department</label>
+
+                            <select class="form-select" required>
+
+                                <option value="">
+                                    Choose Department
+                                </option>
+
+                                <option>CSE</option>
+                                <option>AIML</option>
+                                <option>ECE</option>
+                                <option>ISE</option>
+                                <option>EEE</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-4">
+
+                            <label>Preferred Genre</label>
+
+                            <input type="text"
+                            class="form-control"
+                            list="genre"
+                            placeholder="Choose genre">
+
+                            <datalist id="genre">
+
+                                <option>Science Fiction</option>
+                                <option>AI & ML</option>
+                                <option>Programming</option>
+                                <option>Cyber Security</option>
+                                <option>Data Science</option>
+
+                            </datalist>
+
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+
+                            <label>Membership Type</label>
+
+                            <select class="form-select">
+
+                                <option>Standard</option>
+                                <option>Premium</option>
+                                <option>Research Scholar</option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label>Address</label>
+
+                        <textarea class="form-control"
+                        rows="4"
+                        placeholder="Enter address"
+                        required></textarea>
+
+                    </div>
+
+                    <div class="form-check mb-4">
+
+                        <input type="checkbox"
+                        class="form-check-input"
+                        required>
+
+                        <label class="form-check-label">
+                            I agree to digital library policies
+                        </label>
+
+                    </div>
+
+                    <button class="submit-btn">
+                        Register Membership
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- New Arrival -->
+
+    <section id="arrival">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                New Arrival Collection
+            </h2>
+
+            <div class="row g-4">
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="book-card">
+
+                        <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1200&auto=format&fit=crop">
+
+                        <div class="content">
+
+                            <h4>Quantum Computing</h4>
+
+                            <p>
+                                Explore the future of quantum technologies.
+                            </p>
+
+                            <button class="book-btn"
+                            onclick="showBook('Quantum Computing','Author : Alex Carter | Rack : Q-21 | Available : 7')">
+                                View Details
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="book-card">
+
+                        <img src="https://images.unsplash.com/photo-1529078155058-5d716f45d604?q=80&w=1200&auto=format&fit=crop">
+
+                        <div class="content">
+
+                            <h4>Artificial Intelligence</h4>
+
+                            <p>
+                                Learn modern AI systems and deep learning.
+                            </p>
+
+                            <button class="book-btn"
+                            onclick="showBook('Artificial Intelligence','Author : Sophia Reed | Rack : AI-15 | Available : 12')">
+                                View Details
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+
+                    <div class="book-card">
+
+                        <img src="https://images.unsplash.com/photo-1516979187457-637abb4f9353?q=80&w=1200&auto=format&fit=crop">
+
+                        <div class="content">
+
+                            <h4>Cyber Security</h4>
+
+                            <p>
+                                Understand ethical hacking and network defense.
+                            </p>
+
+                            <button class="book-btn"
+                            onclick="showBook('Cyber Security','Author : Daniel James | Rack : CS-09 | Available : 5')">
+                                View Details
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Opening Hours -->
+
+    <section id="hours">
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Library Opening Hours
+            </h2>
+
+            <div class="glass">
+
+                <div class="row text-center">
+
+                    <div class="col-md-4">
+
+                        <div class="hours-box">
+
+                            <i class="fa-solid fa-calendar-days"></i>
+
+                            <h4>Monday - Friday</h4>
+
+                            <p>8:00 AM - 9:00 PM</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="hours-box">
+
+                            <i class="fa-solid fa-clock"></i>
+
+                            <h4>Saturday</h4>
+
+                            <p>9:00 AM - 6:00 PM</p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="hours-box">
+
+                            <i class="fa-solid fa-door-closed"></i>
+
+                            <h4>Sunday</h4>
+
+                            <p>Holiday</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Dynamic Book Information -->
+
+    <section>
+
+        <div class="container">
+
+            <h2 class="section-title">
+                Dynamic Book Information
+            </h2>
+
+            <div class="dynamic-box">
+
+                <h3 id="bookTitle">
+                    Click Any Book
+                </h3>
+
+                <p id="bookDetails" class="mt-3 text-light">
+                    Book information will appear dynamically here
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <h5>
+            © 2026 NeoVerse Smart Library
+        </h5>
+
+    </footer>
+
+    <!-- Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Form Validation -->
+
+    <script>
+
+        (() => {
+
+            'use strict'
+
+            const forms = document.querySelectorAll('.needs-validation')
+
+            Array.from(forms).forEach(form => {
+
+                form.addEventListener('submit', event => {
+
+                    if (!form.checkValidity()) {
+
+                        event.preventDefault()
+                        event.stopPropagation()
+
+                    }
+
+                    form.classList.add('was-validated')
+
+                }, false)
+
+            })
+
+        })()
+
+        // Dynamic Book Display
+
+        function showBook(title, details){
+
+            document.getElementById("bookTitle").innerHTML = title;
+
+            document.getElementById("bookDetails").innerHTML = details;
+
+        }
+
+    </script>
+
+</body>
+</html>
